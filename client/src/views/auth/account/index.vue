@@ -36,6 +36,15 @@
 					/>
 				</a-form-item>
 
+				<a-form-item label="手机号码">
+					<a-input
+						placeholder="请入用户手机号码"
+						v-decorator="['tele_number', {
+							rules: [{ required: true, message: '请输入用户手机号码!' }]
+						}]"
+					/>
+				</a-form-item>
+
 				<a-form-item label="选择角色">
 					<a-select
 						mode="tags"
@@ -131,6 +140,9 @@ const columns = [{
   title: '登录账号',
   dataIndex: 'name',
 }, {
+  title: '手机号码',
+  dataIndex: 'tele_number',
+}, {
   title: '状态',
   scopedSlots: { customRender: 'status' }
 }, {
@@ -195,7 +207,8 @@ export default {
 						status: row.status,
 						roles: row.roles.map(item => {
 							return item.toString()
-						})
+						}),
+			tele_number:row.tele_number
           }
         )
       })

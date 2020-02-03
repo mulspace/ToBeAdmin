@@ -29,5 +29,5 @@ export default {
     name: 'ls',
     storage: 'local'
   },
-  baseURL: 'http://127.0.0.1:8080' // go服务请求地址
+  baseURL: 'http://127.0.0.1:8081' // go服务请求地址
 }

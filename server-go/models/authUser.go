@@ -3,20 +3,22 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego"
 	"server-go/helper"
 	"server-go/server/jwtx"
+
+	"github.com/astaxie/beego"
 )
 
 type AuthUser struct {
-	Id       int    `gorm:"primary_key" json:"id"`
-	Name     string `json:"name"`
-	Nickname string `json:"nickname"`
-	Password string `json:"password"`
-	Status   int    `json:"status"`
-	Headimg  string `json:"headimg"`
-	Remark   string `json:"remark"`
-	Email    string `json:"email"`
+	Id         int    `gorm:"primary_key" json:"id"`
+	Name       string `json:"name"`
+	Nickname   string `json:"nickname"`
+	TeleNumber string `json:"tele_number"`
+	Password   string `json:"password"`
+	Status     int    `json:"status"`
+	Headimg    string `json:"headimg"`
+	Remark     string `json:"remark"`
+	Email      string `json:"email"`
 }
 
 // 获得超级管理员id
@@ -78,10 +80,11 @@ func (t *AuthUser) Users(page int, pageSize int) (map[string]interface{}, error)
 		db.Table("auth_role_permission_access").Where("role_id in (?)", roleIds).Pluck("permission_id", &ruleIds)
 		listParams = append(listParams, userListParam{
 			AuthUser: AuthUser{
-				Id:       v.Id,
-				Name:     v.Name,
-				Nickname: v.Nickname,
-				Status:   v.Status,
+				Id:         v.Id,
+				Name:       v.Name,
+				Nickname:   v.Nickname,
+				TeleNumber: v.TeleNumber,
+				Status:     v.Status,
 			},
 			Rules: ruleIds,
 			Roles: roleIds,
@@ -108,10 +111,11 @@ func (t *AuthUser) Add(param map[string]interface{}) error {
 		return err
 	}
 	user := AuthUser{
-		Name:     param["name"].(string),
-		Nickname: param["nickname"].(string),
-		Password: newPass,
-		Status:   int(param["status"].(float64)),
+		Name:       param["name"].(string),
+		Nickname:   param["nickname"].(string),
+		TeleNumber: param["tele_number"].(string),
+		Password:   newPass,
+		Status:     int(param["status"].(float64)),
 	}
 	err = db.Create(&user).Error
 	if err != nil {
@@ -169,9 +173,10 @@ func (t *AuthUser) Edit(userId int, param map[string]interface{}) error {
 		return err
 	}
 	editUser := AuthUser{
-		Name:     param["name"].(string),
-		Nickname: param["nickname"].(string),
-		Status:   int(param["status"].(float64)),
+		Name:       param["name"].(string),
+		Nickname:   param["nickname"].(string),
+		TeleNumber: param["tele_number"].(string),
+		Status:     int(param["status"].(float64)),
 	}
 	password, ok := param["password"].(string)
 	if ok {
@@ -219,10 +224,11 @@ func (t *AuthUser) Setting(userId int, param map[string]string) error {
 	var user AuthUser
 	db.Where("id = ?", userId).First(&user)
 	updateUser := AuthUser{
-		Nickname: param["nickname"],
-		Headimg:  param["headimg"],
-		Remark:   param["remark"],
-		Email:    param["email"],
+		Nickname:   param["nickname"],
+		TeleNumber: param["tele_number"],
+		Headimg:    param["headimg"],
+		Remark:     param["remark"],
+		Email:      param["email"],
 	}
 	if param["password"] != "" {
 		if param["password"] != param["password2"] {

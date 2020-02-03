@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 //gorm全局变量
@@ -15,8 +16,6 @@ func init() {
 	RegisterGormDB()
 }
 
-
-
 //gorm创建
 func RegisterGormDB() {
 	mysqluser := beego.AppConfig.String("mysqluser")
@@ -24,7 +23,7 @@ func RegisterGormDB() {
 	mysqldb := beego.AppConfig.String("mysqldb")
 	host := beego.AppConfig.String("host")
 	port := beego.AppConfig.String("port")
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysqluser, mysqlpass, host, port, mysqldb)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&tls=false", mysqluser, mysqlpass, host, port, mysqldb)
 	var err error
 	db, err = gorm.Open("mysql", dsn)
 	if err != nil {
