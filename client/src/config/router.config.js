@@ -56,7 +56,6 @@ export const asyncRouterMap = [
           }
         ]
       },
-
       {
         path: '/account',
         name: 'account',

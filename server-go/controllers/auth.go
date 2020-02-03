@@ -52,6 +52,7 @@ func (t *AuthController) Info() {
 	retData["avatar"] = userInfo.Headimg
 	retData["status"] = userInfo.Status
 	retData["nickname"] = userInfo.Nickname
+	retData["teleNumber"] = userInfo.TeleNumber
 	retData["remark"] = userInfo.Remark
 	retData["email"] = userInfo.Email
 	var authPermission models.AuthPermission
@@ -102,4 +103,3 @@ func (t *AuthController) Setting() {
 	}
 	t.Success("设置成功")
 }
-
